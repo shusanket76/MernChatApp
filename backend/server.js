@@ -8,7 +8,7 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-app.use("/", router);
+app.use("/auth", router);
 
 app.listen(3000, () => {
   console.log("SERVER RUNNING ON 3000");

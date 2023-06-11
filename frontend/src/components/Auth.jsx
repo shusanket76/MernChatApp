@@ -3,10 +3,42 @@ import { useState } from "react";
 import Cookies from "universal-cookie";
 import axios from "axios";
 
+const cookies = new Cookies();
 const Auth = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignup, setSignUp] = useState(true);
+
+  const handleSubmit = async () => {
+    const url = "http://localhost:3000/auth/signup";
+    const {
+      data: { token, userID, hashedPassword },
+    } = await axios.post(url, {
+      username,
+      password,
+    });
+    cookies.set("token", token);
+    cookies.set("username", username);
+    cookies.set("userID", userID);
+    cookies.set("hashedPassword", hashedPassword);
+
+    window.location.reload();
+  };
+
+    const onSignIn = async () => {
+      const url = "http://localhost:3000/auth/login";
+      const {
+        data: { token, userID, hashedPassword },
+      } = await axios.post(url, {
+        username,
+        password,
+      });
+      cookies.set("token", token);
+      cookies.set("username", username);
+      cookies.set("userID", userID);
+      cookies.set("hashedPassword", hashedPassword);
+
+      window.location.reload();
+    };
 
   return (
     <>
@@ -21,7 +53,7 @@ const Auth = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             ></input>
-            <label htmlFor="password">USERNAME</label>
+            <label htmlFor="password">PASSWORD</label>
             <input
               type="password"
               id="password"
@@ -29,8 +61,12 @@ const Auth = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             ></input>
-            {isSignup && <button>SIGNUP</button>}
-            {isSignup || <button>SIGN IN</button>}
+            <button type="button" onClick={handleSubmit}>
+              SIGNUP
+            </button>
+            <button type="button" onClick={onSignIn}>
+              SIGN IN
+            </button>
           </form>
         </div>
       </div>

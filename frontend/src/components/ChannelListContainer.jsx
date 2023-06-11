@@ -6,23 +6,36 @@ import Cookies from "universal-cookie";
 import TeamChannelList from "./TeamChannelList";
 import TeamChannelPreview from "./TeamChannelPreview";
 
-const SideBar = (
-  <div>
-    <div>
-      <div>CHAT APP</div>
-    </div>
-    <div>
+const SideBar = ({ logout }) => {
+  return (
+    <>
       <div>
-        <button>LOGOUT</button>
+        <div>
+          <div>CHAT APP</div>
+        </div>
+        <div>
+          <div>
+            <button onClick={logout}>LOGOUT</button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+      
+    </>
+  );
+};
 
 const ChannelListContainer = () => {
+  const cookies = new Cookies();
+  const logout = () => {
+    cookies.remove("userID");
+    cookies.remove("token");
+    cookies.remove("username");
+    cookies.remove("hashedPassword");
+    window.location.reload();
+  };
   return (
     <div>
-      {SideBar}
+      <SideBar logout={logout} />
       <ChannelSearch />
       <ChannelList
         filters={{}}
